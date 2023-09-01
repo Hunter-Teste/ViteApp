@@ -192,6 +192,49 @@ function Motoristas() {
 		}
 	};
 
+	// calcula o índice inicial e final dos elementos a serem renderizados
+	const startIndex = currentPage * 5;
+	const endIndex = Math.min(startIndex + 5, motoristas.length);
+
+	// gera os números das páginas
+	const totalPages = Math.ceil(motoristas.length / itemsPerPage);
+	const maxPageNumbers = 5;
+
+	const getPageNumbers = () => {
+		const currentPageIndex = currentPage + 1;
+		const middlePage = Math.ceil(maxPageNumbers / 2);
+		const pageNumbers = [];
+
+		if (totalPages <= maxPageNumbers) {
+			for (let i = 1; i <= totalPages; i++) {
+				pageNumbers.push(i);
+			}
+		} else if (currentPageIndex <= middlePage) {
+			for (let i = 1; i <= maxPageNumbers; i++) {
+				pageNumbers.push(i);
+			}
+		} else if (currentPageIndex > totalPages - middlePage) {
+			for (let i = totalPages - maxPageNumbers + 1; i <= totalPages; i++) {
+				pageNumbers.push(i);
+			}
+		} else {
+			const offset = Math.floor(maxPageNumbers / 2) - 1;
+			for (
+				let i = currentPageIndex - offset;
+				i <= currentPageIndex + offset;
+				i++
+			) {
+				pageNumbers.push(i);
+			}
+		}
+
+		return pageNumbers;
+	};
+
+	const handleChangePage = (pageNumber) => {
+		setCurrentPage(pageNumber - 1);
+	};
+
 	const calcIdade = () => {
 		setIdade(moment().diff(moment(data_nascimento), "years"));
 	};
@@ -484,16 +527,6 @@ function Motoristas() {
 		setIsDisabled(false);
 		setIsHidden(true);
 	};
-	// calcula o índice inicial e final dos elementos a serem renderizados
-	const startIndex = currentPage * 4;
-	const endIndex = Math.min(startIndex + 4, motoristas.length);
-
-	// gera os números das páginas
-	const pageNumbers = [];
-
-	for (let i = 1; i <= Math.ceil(motoristas.length / itemsPerPage); i++) {
-		pageNumbers.push(i);
-	}
 
 	const pesquisar = (e) => {
 		setSearchValue(e.target.value);
@@ -1181,19 +1214,17 @@ function Motoristas() {
 							)}
 
 							<thead className="bg-[#370350] text-white rounded-b-2xl w-full h-14 flex justify-center">
-								{Array(Math.ceil(motoristas.length / 4))
-									.fill()
-									.map((_, i) => (
-										<span
-											onClick={() => setCurrentPage(i)}
-											className={`flex justify-center items-center p-4 m-2 cursor-pointer rounded-md transition-all hover:bg-[#53007A] ${
-												i === currentPage ? "bg-[#53007A]" : ""
-											}`}
-											key={i}
-										>
-											<button>{i + 1}</button>
-										</span>
-									))}
+								{getPageNumbers().map((pageNumber) => (
+									<button
+										key={pageNumber}
+										onClick={() => handleChangePage(pageNumber)}
+										className={`flex justify-center items-center p-4 m-2 max-w-3xl cursor-pointer rounded-md transition-all hover:bg-[#53007A] ${
+											pageNumber === currentPage + 1 ? "bg-[#53007A]" : ""
+										}`}
+									>
+										{pageNumber}
+									</button>
+								))}
 							</thead>
 						</table>
 					</div>

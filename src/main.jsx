@@ -8,8 +8,6 @@ import Home from "./dashboard/home/home";
 import Cadastro from "./login/cadastro";
 import Reset from "./login/reset_senha";
 import Pass from "./login/nova_senha";
-import RoletaMotorista from "./roleta/roleta_motorista";
-import RoletaNovo from "./roleta/roleta_cliente";
 import Veiculos from "./dashboard/veiculos/veiculos";
 import VeiculosCad from "./dashboard/veiculos/veiculos_cadastro";
 import Motoristas from "./dashboard/motoristas/motoristas";
@@ -68,16 +66,6 @@ const router = createBrowserRouter([
 		errorElement: <Erro />,
 	},
 	//
-	{
-		path: "/roleta/motorista",
-		element: <RoletaMotorista />,
-		errorElement: <Erro />,
-	},
-	{
-		path: "/roleta/novo",
-		element: <RoletaNovo />,
-		errorElement: <Erro />,
-	},
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
